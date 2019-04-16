@@ -4,7 +4,8 @@ const { ApolloServer, gql } = require('apollo-server-express');
 // スキーマ
 const typeDefs = gql`
   type Query {
-    shops: [Shop]
+    shops: [Shop],
+    shop(name: String!): Shop
   }
 
   type Shop {
@@ -28,7 +29,11 @@ const shops = [
 // リゾルバー
 const resolvers = {
   Query: {
-    shops: () => shops
+    shops: () => shops,
+    shop: (obj, args, context, info) => {
+      const { name } = args
+      return shops.find(_shop => _shop.name === name)
+    }
   }
 };
 
