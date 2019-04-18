@@ -10,7 +10,8 @@ const typeDefs = gql`
 
   type Mutation {
     update(name: String!, newMain: String!): [Shop],
-    create(name: String!, main: String!): [Shop]
+    create(name: String!, main: String!): [Shop],
+    delete(name: String!): [Shop]
   }
 
   type Shop {
@@ -55,6 +56,10 @@ const resolvers = {
       const { name, main } = args
       shops.push({ name, main })
       return shops
+    },
+    delete: (obj, args, context, info) => {
+      const { name } = args
+      return shops.filter(_shop => _shop.name !== name)
     }
   }
 };
